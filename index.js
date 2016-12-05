@@ -4,8 +4,14 @@ module.exports = {
 
 	searchName: function(cardName, callback) {
 		https.get('https://api.magicthegathering.io/v1/cards?name='+cardName, function(res) {
-			res.on("data", function(data) {
-				callback(data.toString());
+			var body = '';
+			res.setEncoding('utf8');
+			res.on('data', function(data) {
+				body += data;
+			});
+
+			res.on('end', function() {
+				callback(body);
 			});
 		});
 	}
